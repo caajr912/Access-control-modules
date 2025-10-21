@@ -1,3 +1,4 @@
+package com.company
 public class DomainThread extends Thread {
     private final int domainId;
     private int currentDomain;

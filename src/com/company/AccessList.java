@@ -1,5 +1,5 @@
 import java.util.*;
-
+package com.company
 public class AccessList {
     private final int N; // domains
     private final int M; // files

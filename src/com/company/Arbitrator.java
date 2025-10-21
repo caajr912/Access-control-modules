@@ -1,4 +1,3 @@
-//where your arbitrator logic will be.  I
 
 package com.company;
 

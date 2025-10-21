@@ -1,5 +1,5 @@
 import java.util.*;
-
+package com.company
 public class AccessMatrix {
     private final int N; // domains
     private final int M; // files
