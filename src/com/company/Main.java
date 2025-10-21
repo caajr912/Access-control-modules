@@ -22,6 +22,42 @@ public class Main {
     static void runTask1(int N, int M) {
         // TODO: Create AccessMatrix and start simulation
     }
+     static void runTask2(int N, int M) {
+        System.out.println("\n========== TASK 2: ACCESS LISTS (OBJECT-BASED) ==========\n");
+
+        // Build Task-2 data model (per-object ACLs)
+        AccessList accessList = new AccessList(N, M);
+        accessList.printFileACLs();
+        accessList.printDomainSwitchACLs();
+
+        // Create Arbitrator using Task-2 constructor (your buddy’s class)
+        // Arbitrator must have a constructor: Arbitrator(AccessList list, int M)
+        Arbitrator arbitrator = new Arbitrator(accessList, M);
+
+        // Create M file objects
+        FileObject[] files = new FileObject[M];
+        for (int i = 0; i < M; i++) {
+            files[i] = new FileObject("Initial content of File " + i);
+        }
+
+        // Create and start N domain threads
+        DomainThread[] domains = new DomainThread[N];
+        for (int i = 0; i < N; i++) {
+            domains[i] = new DomainThread(i, N, M, arbitrator, files);
+            domains[i].start();
+        }
+
+        // Join
+        for (int i = 0; i < N; i++) {
+            try {
+                domains[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("\n========== TASK 2 COMPLETE ==========\n");
+    }
 
     static void runTask3(int N, int M) {
     System.out.println("\n========== TASK 3: CAPABILITY LISTS ==========\n");
