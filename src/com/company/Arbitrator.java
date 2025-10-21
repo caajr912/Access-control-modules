@@ -1,11 +1,11 @@
-where your arbitrator logic will be.  I
+//where your arbitrator logic will be.  I
 
 package com.company;
 
 public class Arbitrator {
     private AccessMatrix accessMatrix;  // For Task 1
     // Later Diego's AccessList stuff for Task 2
-    // Later Task 3's CapabilityList
+    private CapabilityList capabilityList;  // For Task 3
     private int M;
     private int taskNum;
     
@@ -16,11 +16,20 @@ public class Arbitrator {
         this.taskNum = 1;
     }
     
-    // Constructor for Task 2 (Diego will add this)
-    // public Arbitrator(AccessList list, int M) { ... }
+    // Constructor for Task 2 
+    public Arbitrator(AccessList list, int M) {
+        this.accessList = list;
+        this.M = M;
+        this.taskNum = 2;
+    }
+
     
-    // Constructor for Task 3 (Christopher will add this)
-    // public Arbitrator(CapabilityList capList, int M) { ... }
+    // Constructor for Task 3 
+    public Arbitrator(CapabilityList capList, int M) {
+        this.capabilityList = capList;
+        this.M = M;
+        this.taskNum = 3;
+    }
     
     public boolean checkFileAccess(int domainId, int fileId, boolean isWrite) {
         System.out.println("[Arbitrator] Domain " + domainId + 
@@ -39,7 +48,10 @@ public class Arbitrator {
             }
         } 
         // else if (taskNum == 2) { ... Diego's logic ... }
-        // else if (taskNum == 3) { ... Task 3 logic ... }
+        } else if (taskNum == 3) {
+        // Your capability list logic
+        granted = capabilityList.hasFilePermission(domainId, fileId, isWrite);
+    }
         
         System.out.println("[Arbitrator] Access " + (granted ? "GRANTED" : "DENIED"));
         return granted;
@@ -55,7 +67,11 @@ public class Arbitrator {
             String permission = accessMatrix.getDomainPermission(fromDomain, toDomain);
             granted = permission.equals("allow");
         }
-        // Add other task logic as needed
+        //diego will put task 2
+        } else if (taskNum == 3) {
+        granted = capabilityList.canSwitchDomain(fromDomain, toDomain);
+    }
+    
         
         System.out.println("[Arbitrator] Switch " + (granted ? "GRANTED" : "DENIED"));
         return granted;
