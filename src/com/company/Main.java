@@ -18,9 +18,40 @@ public class Main {
             default: System.err.println("Invalid task number");
         }
     }
-    
+
     static void runTask1(int N, int M) {
-        // TODO: Create AccessMatrix and start simulation
+        System.out.println("\n========== TASK 1: ACCESS MATRIX ==========\n");
+
+        // Create access matrix
+        AccessMatrix accessMatrix = new AccessMatrix(N, M);
+        accessMatrix.printMatrix();
+
+        // Create arbitrator
+        Arbitrator arbitrator = new Arbitrator(accessMatrix, M);
+
+        // Create file objects
+        FileObject[] files = new FileObject[M];
+        for (int i = 0; i < M; i++) {
+            files[i] = new FileObject("Initial content of File " + i);
+        }
+
+        // Create and start domain threads
+        DomainThread[] domains = new DomainThread[N];
+        for (int i = 0; i < N; i++) {
+            domains[i] = new DomainThread(i, N, M, arbitrator, files);
+            domains[i].start();
+        }
+
+        // Wait for all threads to finish
+        for (int i = 0; i < N; i++) {
+            try {
+                domains[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("\n========== TASK 1 COMPLETE ==========\n");
     }
      static void runTask2(int N, int M) {
         System.out.println("\n========== TASK 2: ACCESS LISTS (OBJECT-BASED) ==========\n");
