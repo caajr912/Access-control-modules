@@ -22,5 +22,39 @@ public class Main {
     static void runTask1(int N, int M) {
         // TODO: Create AccessMatrix and start simulation
     }
-    // ... etc
+
+    static void runTask3(int N, int M) {
+    System.out.println("\n========== TASK 3: CAPABILITY LISTS ==========\n");
+    
+    // Create capability lists
+    CapabilityList capList = new CapabilityList(N, M);
+    
+    // Create arbitrator
+    Arbitrator arbitrator = new Arbitrator(capList, M);
+    
+    // Create file objects
+    FileObject[] files = new FileObject[M];
+    for (int i = 0; i < M; i++) {
+        files[i] = new FileObject("Initial content of File " + i);
+    }
+    
+    // Create and start domain threads
+    DomainThread[] domains = new DomainThread[N];
+    for (int i = 0; i < N; i++) {
+        domains[i] = new DomainThread(i, N, M, arbitrator, files);
+        domains[i].start();
+    }
+    
+    // Wait for all threads to finish
+    for (int i = 0; i < N; i++) {
+        try {
+            domains[i].join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    System.out.println("\n========== TASK 3 COMPLETE ==========\n");
+}
+    
 }
