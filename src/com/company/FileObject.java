@@ -1,5 +1,5 @@
 import java.util.concurrent.Semaphore;
-package com.company
+package com.company;
 public class FileObject {
     private String content;
     private Semaphore lock;
