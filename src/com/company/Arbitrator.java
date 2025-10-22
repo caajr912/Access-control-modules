@@ -1,9 +1,8 @@
-
 package com.company;
 
 public class Arbitrator {
-    private AccessMatrix accessMatrix;  // For Task 1
-    // Later Diego's AccessList stuff for Task 2
+    private AccessMatrix accessMatrix;      // For Task 1
+    private AccessList accessList;          // For Task 2
     private CapabilityList capabilityList;  // For Task 3
     private int M;
     private int taskNum;
@@ -15,15 +14,14 @@ public class Arbitrator {
         this.taskNum = 1;
     }
     
-    // Constructor for Task 2 
+    // Constructor for Task 2
     public Arbitrator(AccessList list, int M) {
         this.accessList = list;
         this.M = M;
         this.taskNum = 2;
     }
-
     
-    // Constructor for Task 3 
+    // Constructor for Task 3
     public Arbitrator(CapabilityList capList, int M) {
         this.capabilityList = capList;
         this.M = M;
@@ -35,22 +33,24 @@ public class Arbitrator {
                           " requesting " + (isWrite ? "WRITE" : "READ") + 
                           " to File " + fileId);
         
-        boolean granted = false;
+        String permission = "";
         
+        // Get permission based on which task
         if (taskNum == 1) {
-            // Use access matrix
-            String permission = accessMatrix.getFilePermission(domainId, fileId);
-            if (isWrite) {
-                granted = permission.equals("W") || permission.equals("R/W");
-            } else {
-                granted = permission.equals("R") || permission.equals("R/W");
-            }
-        } 
-        // else if (taskNum == 2) { ... Diego's logic ... }
+            permission = accessMatrix.getFilePermission(domainId, fileId);
+        } else if (taskNum == 2) {
+            permission = accessList.getFilePermission(domainId, fileId);
         } else if (taskNum == 3) {
-        // Your capability list logic
-        granted = capabilityList.hasFilePermission(domainId, fileId, isWrite);
-    }
+            permission = capabilityList.getFilePermission(domainId, fileId);
+        }
+        
+        // Check if permission allows the operation
+        boolean granted = false;
+        if (isWrite) {
+            granted = permission.equals("W") || permission.equals("R/W");
+        } else {
+            granted = permission.equals("R") || permission.equals("R/W");
+        }
         
         System.out.println("[Arbitrator] Access " + (granted ? "GRANTED" : "DENIED"));
         return granted;
@@ -63,14 +63,13 @@ public class Arbitrator {
         boolean granted = false;
         
         if (taskNum == 1) {
-            String permission = accessMatrix.getDomainPermission(fromDomain, toDomain);
-            granted = permission.equals("allow");
-        }
-        //diego will put task 2
+            String perm = accessMatrix.getDomainPermission(fromDomain, toDomain);
+            granted = perm.equals("allow");
+        } else if (taskNum == 2) {
+            granted = accessList.canSwitchDomain(fromDomain, toDomain);
         } else if (taskNum == 3) {
-        granted = capabilityList.canSwitchDomain(fromDomain, toDomain);
-    }
-    
+            granted = capabilityList.canSwitchDomain(fromDomain, toDomain);
+        }
         
         System.out.println("[Arbitrator] Switch " + (granted ? "GRANTED" : "DENIED"));
         return granted;
