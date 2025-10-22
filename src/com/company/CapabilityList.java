@@ -81,17 +81,14 @@ public class CapabilityList {
     }
     
     // Check if domain has permission to access a file
-    public boolean hasFilePermission(int domain, int fileId, boolean isWrite) {
+    // Return "", "R", "W", or "R/W" (matches Diego's interface)
+    public String getFilePermission(int domain, int fileId) {
         for (Capability cap : capabilityLists[domain]) {
             if (cap.isFile && cap.objectId == fileId) {
-                if (isWrite) {
-                    return cap.permission.equals("W") || cap.permission.equals("R/W");
-                } else {
-                    return cap.permission.equals("R") || cap.permission.equals("R/W");
-                }
+                return cap.permission;  // Returns "R", "W", "R/W"
             }
         }
-        return false;  // No capability found
+        return "";  // No capability found - return empty string
     }
     
     // Check if domain can switch to another domain

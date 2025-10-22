@@ -54,7 +54,7 @@ public class Arbitrator {
         
         System.out.println("[Arbitrator] Access " + (granted ? "GRANTED" : "DENIED"));
         return granted;
-    }
+        }
     
     public boolean checkDomainSwitch(int fromDomain, int toDomain) {
         System.out.println("[Arbitrator] Domain " + fromDomain + 
@@ -71,7 +71,7 @@ public class Arbitrator {
             granted = capabilityList.canSwitchDomain(fromDomain, toDomain);
         }
         
-        System.out.println("[Arbitrator] Switch " + (granted ? "GRANTED" : "DENIED"));
-        return granted;
-    }
+         System.out.println("[Arbitrator] Switch " + (granted ? "GRANTED" : "DENIED"));
+         return granted;
+        }
 }
