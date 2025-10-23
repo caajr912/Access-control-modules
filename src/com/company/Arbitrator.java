@@ -51,8 +51,8 @@ public class Arbitrator {
         } else {
             granted = permission.equals("R") || permission.equals("R/W");
         }
-        
-        System.out.println("[Arbitrator] Access " + (granted ? "GRANTED" : "DENIED"));
+
+        System.out.println("[Arbitrator] " + "D" + domainId + " Access " + (granted ? "GRANTED" : "DENIED"));
         return granted;
         }
     
@@ -71,7 +71,7 @@ public class Arbitrator {
             granted = capabilityList.canSwitchDomain(fromDomain, toDomain);
         }
         
-         System.out.println("[Arbitrator] Switch " + (granted ? "GRANTED" : "DENIED"));
+         System.out.println("[Arbitrator] Switch From D" + fromDomain + " to D" + toDomain + " " + (granted ? "GRANTED" : "DENIED"));
          return granted;
         }
 }
